@@ -39,19 +39,19 @@ export function normalizeCodexUsage(input: unknown): Usage {
         credits: { has_credits: credits.hasCredits, unlimited: credits.unlimited, balance: credits.balance },
         individual_limit: bucket.individualLimit,
       })
-      extras.push({ label: safeText(bucket.limitName) ?? safeText(id) ?? 'Доп. лимит', credits: metrics.credits, budget: metrics.budget })
-    } catch { /* Некорректный доп. бюджет не должен скрывать остальные квоты. */ }
+      extras.push({ label: safeText(bucket.limitName) ?? safeText(id) ?? 'Additional limit', credits: metrics.credits, budget: metrics.budget })
+    } catch { /* An invalid extra budget must not hide other quotas. */ }
   }
   if (extras.length) usage.buckets = extras
   const details: { label: string; value: string }[] = []
   for (const [id, value] of Object.entries(Object.keys(buckets).length ? buckets : { codex: main })) {
     const bucket = record(value)
-    const label = safeText(bucket.limitName) ?? safeText(id) ?? 'Лимит'
+    const label = safeText(bucket.limitName) ?? safeText(id) ?? 'Limit'
     const reached = safeText(bucket.rateLimitReachedType)
-    if (reached) details.push({ label: `${label} · ограничение`, value: reached })
-    if (typeof bucket.spendControlReached === 'boolean') details.push({ label: `${label} · бюджет исчерпан`, value: bucket.spendControlReached ? 'да' : 'нет' })
+    if (reached) details.push({ label: `${label} · restriction`, value: reached })
+    if (typeof bucket.spendControlReached === 'boolean') details.push({ label: `${label} · budget exhausted`, value: bucket.spendControlReached ? 'yes' : 'no' })
     const model = safeText(bucket.normalModelSlug)
-    if (model) details.push({ label: `${label} · модель`, value: model })
+    if (model) details.push({ label: `${label} · model`, value: model })
   }
   usage.details = details
   const resets = record(root.rateLimitResetCredits)
@@ -119,7 +119,7 @@ export async function readCodexUsage(input: ReadInput, start: () => ChildProcess
     const label = [safeText(account.email), safeText(account.workspaceName)].filter(Boolean).join(' · ')
     if (!label) throw new UsageError('unavailable')
     const response = record(await call('account/rateLimits/read'))
-    // Названия workspace могут совпадать; только ответ usage подтверждает владельца квот.
+    // Workspace names may match; only the usage response identifies the quota owner.
     if (typeof response.accountId === 'string' && response.accountId) input.onAccount({ id: response.accountId, label })
     const usage = normalizeCodexUsage(response)
     usage.plan ??= safeText(account.planType)

@@ -42,23 +42,23 @@ function progress(used, width) {
 }
 function remainingTime(resetAt, now) {
   if (resetAt === undefined)
-    return "\u0432\u0440\u0435\u043C\u044F \u043D\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u043E";
+    return "time unknown";
   if (resetAt <= now)
-    return "\u043E\u0436\u0438\u0434\u0430\u0435\u043C \u0441\u0431\u0440\u043E\u0441";
+    return "awaiting reset";
   const minutes = Math.floor((resetAt - now) / 60000);
   if (minutes < 1)
-    return "< 1\u043C";
+    return "< 1m";
   if (minutes < 60)
-    return `${minutes}\u043C`;
+    return `${minutes}m`;
   const hours = Math.floor(minutes / 60);
   if (hours < 24)
-    return `${hours}\u0447 ${minutes % 60}\u043C`;
-  return `${Math.floor(hours / 24)}\u0434 ${hours % 24}\u0447`;
+    return `${hours}h ${minutes % 60}m`;
+  return `${Math.floor(hours / 24)}d ${hours % 24}h`;
 }
 
 // src/panel.tsx
 var percent = (value) => `${Math.round(value * 10) / 10}%`;
-var exactTime = (value) => new Date(value).toLocaleString("ru-RU", {
+var exactTime = (value) => new Date(value).toLocaleString("en-US", {
   day: "numeric",
   month: "short",
   hour: "2-digit",
@@ -83,7 +83,7 @@ function UsagePanel(props) {
       return p.credits?.balance !== undefined;
     },
     get children() {
-      var _el$ = _$createElement("text"), _el$2 = _$createTextNode(`\u041A\u0440\u0435\u0434\u0438\u0442\u044B: `);
+      var _el$ = _$createElement("text"), _el$2 = _$createTextNode(`Credits: `);
       _$insertNode(_el$, _el$2);
       _$insert(_el$, () => p.credits.balance, null);
       _$effect((_$p) => _$setProp(_el$, "fg", props.colors.muted, _$p));
@@ -94,9 +94,9 @@ function UsagePanel(props) {
       return p.credits?.unlimited !== undefined;
     },
     get children() {
-      var _el$3 = _$createElement("text"), _el$4 = _$createTextNode(`\u0411\u0435\u0437\u043B\u0438\u043C\u0438\u0442\u043D\u044B\u0435 \u043A\u0440\u0435\u0434\u0438\u0442\u044B: `);
+      var _el$3 = _$createElement("text"), _el$4 = _$createTextNode(`Unlimited credits: `);
       _$insertNode(_el$3, _el$4);
-      _$insert(_el$3, () => p.credits?.unlimited ? "\u0434\u0430" : "\u043D\u0435\u0442", null);
+      _$insert(_el$3, () => p.credits?.unlimited ? "yes" : "no", null);
       _$effect((_$p) => _$setProp(_el$3, "fg", props.colors.muted, _$p));
       return _el$3;
     }
@@ -105,9 +105,9 @@ function UsagePanel(props) {
       return p.credits?.hasCredits !== undefined;
     },
     get children() {
-      var _el$5 = _$createElement("text"), _el$6 = _$createTextNode(`\u041A\u0440\u0435\u0434\u0438\u0442\u044B \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B: `);
+      var _el$5 = _$createElement("text"), _el$6 = _$createTextNode(`Credits available: `);
       _$insertNode(_el$5, _el$6);
-      _$insert(_el$5, () => p.credits?.hasCredits ? "\u0434\u0430" : "\u043D\u0435\u0442", null);
+      _$insert(_el$5, () => p.credits?.hasCredits ? "yes" : "no", null);
       _$effect((_$p) => _$setProp(_el$5, "fg", props.colors.muted, _$p));
       return _el$5;
     }
@@ -116,7 +116,7 @@ function UsagePanel(props) {
       return p.budget?.limit !== undefined;
     },
     get children() {
-      var _el$7 = _$createElement("text"), _el$8 = _$createTextNode(`\u0411\u044E\u0434\u0436\u0435\u0442: `), _el$9 = _$createTextNode(` \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0432`);
+      var _el$7 = _$createElement("text"), _el$8 = _$createTextNode(`Budget: `), _el$9 = _$createTextNode(` credits`);
       _$insertNode(_el$7, _el$8);
       _$insertNode(_el$7, _el$9);
       _$insert(_el$7, () => p.budget.limit, _el$9);
@@ -128,7 +128,7 @@ function UsagePanel(props) {
       return p.budget?.used !== undefined;
     },
     get children() {
-      var _el$0 = _$createElement("text"), _el$1 = _$createTextNode(`\u041F\u043E\u0442\u0440\u0430\u0447\u0435\u043D\u043E: `), _el$10 = _$createTextNode(` \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0432`);
+      var _el$0 = _$createElement("text"), _el$1 = _$createTextNode(`Spent: `), _el$10 = _$createTextNode(` credits`);
       _$insertNode(_el$0, _el$1);
       _$insertNode(_el$0, _el$10);
       _$insert(_el$0, () => p.budget.used, _el$10);
@@ -140,7 +140,7 @@ function UsagePanel(props) {
       return p.budget?.remainingPercent !== undefined;
     },
     get children() {
-      var _el$11 = _$createElement("text"), _el$12 = _$createTextNode(`\u0411\u044E\u0434\u0436\u0435\u0442: `), _el$13 = _$createTextNode(` \u043E\u0441\u0442\u0430\u043B\u043E\u0441\u044C`);
+      var _el$11 = _$createElement("text"), _el$12 = _$createTextNode(`Budget: `), _el$13 = _$createTextNode(` remaining`);
       _$insertNode(_el$11, _el$12);
       _$insertNode(_el$11, _el$13);
       _$insert(_el$11, () => percent(p.budget.remainingPercent), _el$13);
@@ -152,7 +152,7 @@ function UsagePanel(props) {
       return p.budget?.resetAt !== undefined;
     },
     get children() {
-      var _el$14 = _$createElement("text"), _el$15 = _$createTextNode(`\u0421\u0431\u0440\u043E\u0441 \u0431\u044E\u0434\u0436\u0435\u0442\u0430: `);
+      var _el$14 = _$createElement("text"), _el$15 = _$createTextNode(`Budget reset: `);
       _$insertNode(_el$14, _el$15);
       _$insert(_el$14, () => exactTime(p.budget.resetAt), null);
       _$effect((_$p) => _$setProp(_el$14, "fg", props.colors.muted, _$p));
@@ -162,7 +162,7 @@ function UsagePanel(props) {
   const Meter = (p) => {
     const bar = () => progress(p.window.used, Math.max(1, Math.min(28, width())));
     return (() => {
-      var _el$16 = _$createElement("box"), _el$17 = _$createElement("text"), _el$18 = _$createElement("text"), _el$19 = _$createElement("b"), _el$20 = _$createTextNode(` \u043E\u0441\u0442\u0430\u043B\u043E\u0441\u044C`), _el$21 = _$createElement("text"), _el$22 = _$createElement("span"), _el$23 = _$createElement("span"), _el$24 = _$createElement("text"), _el$25 = _$createTextNode(` \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u043E`), _el$26 = _$createElement("text"), _el$27 = _$createTextNode(`\u0421\u0431\u0440\u043E\u0441: `);
+      var _el$16 = _$createElement("box"), _el$17 = _$createElement("text"), _el$18 = _$createElement("text"), _el$19 = _$createElement("b"), _el$20 = _$createTextNode(` remaining`), _el$21 = _$createElement("text"), _el$22 = _$createElement("span"), _el$23 = _$createElement("span"), _el$24 = _$createElement("text"), _el$25 = _$createTextNode(` used`), _el$26 = _$createElement("text"), _el$27 = _$createTextNode(`Reset: `);
       _$insertNode(_el$16, _el$17);
       _$insertNode(_el$16, _el$18);
       _$insertNode(_el$16, _el$21);
@@ -237,7 +237,7 @@ function UsagePanel(props) {
     _$insertNode(_el$33, _el$36);
     _$insertNode(_el$34, _$createTextNode(`OpenAI`));
     _$insert(_el$36, () => props.active ? " \u25CF" : "");
-    _$insert(_el$37, () => [planName(usage()?.plan), "\u0447\u0435\u0440\u0435\u0437 Codex"].filter(Boolean).join(" \xB7 "));
+    _$insert(_el$37, () => [planName(usage()?.plan), "via Codex"].filter(Boolean).join(" \xB7 "));
     _$insert(_el$29, _$createComponent(Show, {
       get when() {
         return usage();
@@ -245,7 +245,7 @@ function UsagePanel(props) {
       get fallback() {
         return (() => {
           var _el$51 = _$createElement("text");
-          _$insert(_el$51, () => props.loading ? "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043C \u043B\u0438\u043C\u0438\u0442\u044B\u2026" : "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445");
+          _$insert(_el$51, () => props.loading ? "Loading usage\u2026" : "No data available");
           _$effect((_$p) => _$setProp(_el$51, "fg", props.colors.muted, _$p));
           return _el$51;
         })();
@@ -264,7 +264,7 @@ function UsagePanel(props) {
           },
           get children() {
             var _el$38 = _$createElement("text");
-            _$insertNode(_el$38, _$createTextNode(`\u041B\u0438\u043C\u0438\u0442 \u0438\u0441\u0447\u0435\u0440\u043F\u0430\u043D`));
+            _$insertNode(_el$38, _$createTextNode(`Limit reached`));
             _$effect((_$p) => _$setProp(_el$38, "fg", props.colors.error, _$p));
             return _el$38;
           }
@@ -332,9 +332,9 @@ function UsagePanel(props) {
                   return usage()?.allowed !== undefined;
                 },
                 get children() {
-                  var _el$42 = _$createElement("text"), _el$43 = _$createTextNode(`\u0417\u0430\u043F\u0440\u043E\u0441\u044B \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u044B: `);
+                  var _el$42 = _$createElement("text"), _el$43 = _$createTextNode(`Requests allowed: `);
                   _$insertNode(_el$42, _el$43);
-                  _$insert(_el$42, () => usage()?.allowed ? "\u0434\u0430" : "\u043D\u0435\u0442", null);
+                  _$insert(_el$42, () => usage()?.allowed ? "yes" : "no", null);
                   _$effect((_$p) => _$setProp(_el$42, "fg", props.colors.muted, _$p));
                   return _el$42;
                 }
@@ -358,7 +358,7 @@ function UsagePanel(props) {
                 },
                 get children() {
                   return [(() => {
-                    var _el$44 = _$createElement("text"), _el$45 = _$createTextNode(`\u0421\u0431\u0440\u043E\u0441\u044B \u043B\u0438\u043C\u0438\u0442\u0430: `);
+                    var _el$44 = _$createElement("text"), _el$45 = _$createTextNode(`Available resets: `);
                     _$insertNode(_el$44, _el$45);
                     _$insert(_el$44, () => usage().resetCredits.available, null);
                     _$effect((_$p) => _$setProp(_el$44, "fg", props.colors.muted, _$p));
@@ -370,14 +370,11 @@ function UsagePanel(props) {
                     children: (item) => (() => {
                       var _el$56 = _$createElement("text"), _el$57 = _$createTextNode(` \xB7 `);
                       _$insertNode(_el$56, _el$57);
-                      _$insert(_el$56, () => item.title ?? "\u0421\u0431\u0440\u043E\u0441", _el$57);
+                      _$insert(_el$56, () => item.title ?? "Reset", _el$57);
+                      _$insert(_el$56, () => item.status ?? "\u2014", null);
                       _$insert(_el$56, (() => {
-                        var _c$2 = _$memo(() => item.status === "available");
-                        return () => _c$2() ? "\u0434\u043E\u0441\u0442\u0443\u043F\u0435\u043D" : item.status ?? "\u2014";
-                      })(), null);
-                      _$insert(_el$56, (() => {
-                        var _c$3 = _$memo(() => !!item.expiresAt);
-                        return () => _c$3() ? ` \xB7 \u0434\u043E ${exactTime(item.expiresAt)}` : "";
+                        var _c$2 = _$memo(() => !!item.expiresAt);
+                        return () => _c$2() ? ` \xB7 expires ${exactTime(item.expiresAt)}` : "";
                       })(), null);
                       _$effect((_$p) => _$setProp(_el$56, "fg", props.colors.muted, _$p));
                       return _el$56;
@@ -391,7 +388,7 @@ function UsagePanel(props) {
         }), (() => {
           var _el$46 = _$createElement("text");
           _$setProp(_el$46, "marginTop", 1);
-          _$insert(_el$46, () => props.expanded ? "\u25BE \u0421\u043A\u0440\u044B\u0442\u044C \u043F\u043E\u0434\u0440\u043E\u0431\u043D\u043E\u0441\u0442\u0438" : "\u25B8 \u0414\u0430\u043D\u043D\u044B\u0435 \u0430\u043A\u043A\u0430\u0443\u043D\u0442\u0430");
+          _$insert(_el$46, () => props.expanded ? "\u25BE Hide details" : "\u25B8 Account details");
           _$effect((_p$) => {
             var _v$7 = props.colors.accent, _v$8 = props.toggle;
             _v$7 !== _p$.e && (_p$.e = _$setProp(_el$46, "fg", _v$7, _p$.e));
@@ -411,7 +408,7 @@ function UsagePanel(props) {
       },
       get children() {
         var _el$47 = _$createElement("text");
-        _$insertNode(_el$47, _$createTextNode(`\u0414\u0430\u043D\u043D\u044B\u0435 \u0443\u0441\u0442\u0430\u0440\u0435\u043B\u0438`));
+        _$insertNode(_el$47, _$createTextNode(`Data is out of date`));
         _$effect((_$p) => _$setProp(_el$47, "fg", props.colors.warning, _$p));
         return _el$47;
       }
@@ -430,7 +427,7 @@ function UsagePanel(props) {
     _$setProp(_el$50, "marginTop", 1);
     _$insert(_el$50, (() => {
       var _c$ = _$memo(() => !!props.loading);
-      return () => _c$() ? "\u041E\u0431\u043D\u043E\u0432\u043B\u044F\u0435\u043C\u2026" : _$memo(() => props.snapshot?.updatedAt === undefined)() ? "\u21BB \u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C" : `\u21BB ${Math.max(0, Math.floor((props.now - props.snapshot.updatedAt) / 60000))}\u043C \u043D\u0430\u0437\u0430\u0434 \xB7 \u043A\u0430\u0436\u0434\u044B\u0435 60\u0441`;
+      return () => _c$() ? "Refreshing\u2026" : _$memo(() => props.snapshot?.updatedAt === undefined)() ? "\u21BB Refresh" : `\u21BB ${Math.max(0, Math.floor((props.now - props.snapshot.updatedAt) / 60000))}m ago \xB7 every 60s`;
     })());
     _$effect((_p$) => {
       var _v$9 = props.colors.text, _v$0 = props.colors.text, _v$1 = {
@@ -489,7 +486,7 @@ var tui_default = Plugin.define({
                 ...previous,
                 state: previous?.usage ? "stale" : "unavailable",
                 checkedAt: Date.now(),
-                message: "\u041D\u0435\u0442 \u0441\u0432\u044F\u0437\u0438 \u0441 \u0441\u0435\u0440\u0432\u0435\u0440\u043E\u043C OpenCode"
+                message: "Cannot reach the OpenCode server"
               }));
           } finally {
             request = undefined;
@@ -514,7 +511,7 @@ var tui_default = Plugin.define({
           mode: "global",
           commands: [{
             id: "openai-usage.details",
-            title: "OpenAI Usage: \u043F\u043E\u0434\u0440\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
+            title: "OpenAI Usage: Toggle details",
             group: "Usage",
             palette: true,
             slash: {
@@ -523,7 +520,7 @@ var tui_default = Plugin.define({
             run: toggle
           }, {
             id: "openai-usage.refresh",
-            title: "OpenAI Usage: \u043E\u0431\u043D\u043E\u0432\u0438\u0442\u044C",
+            title: "OpenAI Usage: Refresh",
             group: "Usage",
             palette: true,
             run: refresh

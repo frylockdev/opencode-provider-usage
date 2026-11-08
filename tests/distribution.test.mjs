@@ -20,13 +20,13 @@ test('distributed TUI loads from node_modules and renders live RPC data', async 
     await plugin.setup({
       ui: { slot: claim => { render = claim.render; return () => {} }, model: { current: () => ({ providerID: 'openai' }) } },
       client: { rpc: () => ({ get: async () => ({ state: 'ready', checkedAt: Date.now(), updatedAt: Date.now(),
-        usage: { plan: 'pro', windows: [{ id: 'week', label: 'Неделя', used: 27, extra: false }] } }) }) },
+        usage: { plan: 'pro', windows: [{ id: 'week', label: 'Weekly', used: 27, extra: false }] } }) }) },
       data: { location: { default: () => ({ directory: '/' }) } },
       keymap: { layer() {} }, theme: { text },
     })
     screen = await testRender(() => render(), { width: 32, height: 30 })
-    await screen.waitForFrame(frame => frame.includes('73% осталось'))
-    assert.match(screen.captureCharFrame(), /27% использовано/)
+    await screen.waitForFrame(frame => frame.includes('73% remaining'))
+    assert.match(screen.captureCharFrame(), /27% used/)
   } finally {
     if (screen) await screen.dispose()
     await rm(temp, { recursive: true, force: true })

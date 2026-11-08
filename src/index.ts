@@ -3,7 +3,7 @@ import { OpenAIUsage } from './rpc.ts'
 import { createUsageService } from './service.ts'
 import { readCodexUsage } from './codex.ts'
 
-// Один кеш на процесс сервера, общий для панелей разных проектов.
+// One cache per server process, shared by panels across projects.
 const service = createUsageService({ read: readCodexUsage })
 
 export default Plugin.define({

@@ -27,7 +27,7 @@ export default Plugin.define({
           if (!disposed) setSnapshot(result as UsageSnapshot)
         } catch {
           if (!disposed) setSnapshot(previous => ({ ...previous, state: previous?.usage ? 'stale' : 'unavailable',
-            checkedAt: Date.now(), message: 'Нет связи с сервером OpenCode' }))
+            checkedAt: Date.now(), message: 'Cannot reach the OpenCode server' }))
         } finally { request = undefined; if (!disposed) { setLoading(false); setNow(Date.now()) } }
       }
       onMount(() => {
@@ -37,8 +37,8 @@ export default Plugin.define({
         onCleanup(() => { disposed = true; request?.abort(); clearInterval(poll); clearInterval(clock) })
       })
       context.keymap.layer(() => ({ mode: 'global', commands: [
-        { id: 'openai-usage.details', title: 'OpenAI Usage: подробности', group: 'Usage', palette: true, slash: { name: 'usage' }, run: toggle },
-        { id: 'openai-usage.refresh', title: 'OpenAI Usage: обновить', group: 'Usage', palette: true, run: refresh },
+        { id: 'openai-usage.details', title: 'OpenAI Usage: Toggle details', group: 'Usage', palette: true, slash: { name: 'usage' }, run: toggle },
+        { id: 'openai-usage.refresh', title: 'OpenAI Usage: Refresh', group: 'Usage', palette: true, run: refresh },
       ] }))
       return <UsagePanel snapshot={snapshot()} now={now()} expanded={expanded()} toggle={toggle} refresh={() => void refresh()} loading={loading()}
         active={context.ui.model.current()?.providerID === 'openai'} colors={{

@@ -20,14 +20,14 @@ export class UsageError extends Error {
 function message(error: unknown): string {
   if (error instanceof UsageError) {
     switch (error.code) {
-      case 'login': return 'Войдите в Codex: codex login'
-      case 'unsupported': return 'Нужен вход Codex через ChatGPT'
-      case 'rate-limit': return 'OpenAI ограничил обновления · повтор через 5м'
-      case 'missing': return 'Codex CLI не найден'
+      case 'login': return 'Sign in to Codex: codex login'
+      case 'unsupported': return 'Sign in to Codex with ChatGPT'
+      case 'rate-limit': return 'OpenAI rate limit · retry in 5m'
+      case 'missing': return 'Codex CLI not found'
     }
   }
-  if (error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError')) return 'Истекло время ожидания Codex'
-  return 'Не удалось получить лимиты Codex'
+  if (error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError')) return 'Codex request timed out'
+  return 'Could not fetch Codex usage'
 }
 
 export function createUsageService({ read, now = Date.now }: {
@@ -60,7 +60,7 @@ export function createUsageService({ read, now = Date.now }: {
             account: account?.label, usage: snapshot?.usage, updatedAt: snapshot?.updatedAt,
             checkedAt: now(), retryAt: next, message: message(error) }
         }
-        // RPC проверяет JSON до сериализации, поэтому undefined нужно убрать здесь.
+        // RPC validates JSON before serialization, so strip undefined values here.
         snapshot = JSON.parse(JSON.stringify(snapshot)) as UsageSnapshot
         return snapshot
       })().finally(() => { pending = undefined })

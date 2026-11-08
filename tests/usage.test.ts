@@ -14,7 +14,7 @@ test('normalizes all windows without leaking raw account fields', () => {
   })
   assert.equal(usage.plan, 'pro')
   assert.deepEqual(usage.windows.map(w => [w.label, w.used, w.extra]), [
-    ['5 часов', 18, false], ['Неделя', 81, false], ['Spark · 5 часов', 32, true], ['Code review · Неделя', 0, true],
+    ['5 hours', 18, false], ['Weekly', 81, false], ['Spark · 5 hours', 32, true], ['Code review · Weekly', 0, true],
   ])
   assert.equal(usage.windows[0].resetAt, 1800000000000)
   assert.equal(usage.allowed, true)
@@ -68,9 +68,9 @@ test('progress handles zero, full and narrow bars', () => {
 })
 
 test('countdown distinguishes unavailable, elapsed and future resets', () => {
-  assert.equal(remainingTime(undefined, 0), 'время неизвестно')
-  assert.equal(remainingTime(0, 100), 'ожидаем сброс')
-  assert.equal(remainingTime(1000, 0), '< 1м')
-  assert.equal(remainingTime(4800000, 0), '1ч 20м')
-  assert.equal(remainingTime(190800000, 0), '2д 5ч')
+  assert.equal(remainingTime(undefined, 0), 'time unknown')
+  assert.equal(remainingTime(0, 100), 'awaiting reset')
+  assert.equal(remainingTime(1000, 0), '< 1m')
+  assert.equal(remainingTime(4800000, 0), '1h 20m')
+  assert.equal(remainingTime(190800000, 0), '2d 5h')
 })

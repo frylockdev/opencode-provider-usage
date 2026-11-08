@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { createUsageService, UsageError } from '../src/service.ts'
 
-const usage = { windows: [{ id: 'main', label: 'Неделя', used: 27, extra: false }] }
+const usage = { windows: [{ id: 'main', label: 'Weekly', used: 27, extra: false }] }
 const account = { id: 'a', label: 'user@example.com' }
 
 test('60-second polling refreshes every minute even with network latency', async () => {
@@ -86,5 +86,5 @@ test('passes a timeout signal to transport and releases failed requests', async 
   } })
   assert.equal((await service.get()).state, 'unavailable')
   now = 60000
-  assert.ok((await service.get()).message?.includes('время'))
+  assert.ok((await service.get()).message?.includes('timed out'))
 })

@@ -54,12 +54,12 @@ function timestamp(value: unknown): number | undefined {
 
 function windowLabel(seconds: unknown, fallback: string): string {
   const n = number(seconds)
-  if (n === 604800) return 'Неделя'
-  if (n === 18000) return '5 часов'
+  if (n === 604800) return 'Weekly'
+  if (n === 18000) return '5 hours'
   if (!n) return fallback
-  if (n % 86400 === 0) return `${n / 86400}д`
-  if (n % 3600 === 0) return `${n / 3600}ч`
-  return `${Math.ceil(n / 60)}м`
+  if (n % 86400 === 0) return `${n / 86400}d`
+  if (n % 3600 === 0) return `${n / 3600}h`
+  return `${Math.ceil(n / 60)}m`
 }
 
 export function normalizeUsage(input: unknown): Usage {
@@ -68,7 +68,7 @@ export function normalizeUsage(input: unknown): Usage {
   const windows: UsageWindow[] = []
   function addWindows(value: unknown, id: string, name = '', extra = false) {
     const group = record(value)
-    for (const [key, fallback] of [['primary_window', 'Основной лимит'], ['secondary_window', 'Доп. окно']]) {
+    for (const [key, fallback] of [['primary_window', 'Primary limit'], ['secondary_window', 'Secondary limit']]) {
       const window = record(group[key])
       const used = percent(window.used_percent)
       if (used === undefined) continue
@@ -80,7 +80,7 @@ export function normalizeUsage(input: unknown): Usage {
   if (Array.isArray(root.additional_rate_limits)) {
     root.additional_rate_limits.slice(0, 50).forEach((value, i) => {
       const item = record(value)
-      addWindows(item.rate_limit, `extra.${i}`, safeText(item.limit_name) ?? safeText(item.metered_feature) ?? 'Доп. лимит', true)
+      addWindows(item.rate_limit, `extra.${i}`, safeText(item.limit_name) ?? safeText(item.metered_feature) ?? 'Additional limit', true)
     })
   }
   addWindows(root.code_review_rate_limit, 'review', 'Code review', true)
@@ -113,12 +113,12 @@ export function progress(used: number, width: number): { filled: string; empty: 
 }
 
 export function remainingTime(resetAt: number | undefined, now: number): string {
-  if (resetAt === undefined) return 'время неизвестно'
-  if (resetAt <= now) return 'ожидаем сброс'
+  if (resetAt === undefined) return 'time unknown'
+  if (resetAt <= now) return 'awaiting reset'
   const minutes = Math.floor((resetAt - now) / 60000)
-  if (minutes < 1) return '< 1м'
-  if (minutes < 60) return `${minutes}м`
+  if (minutes < 1) return '< 1m'
+  if (minutes < 60) return `${minutes}m`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}ч ${minutes % 60}м`
-  return `${Math.floor(hours / 24)}д ${hours % 24}ч`
+  if (hours < 24) return `${hours}h ${minutes % 60}m`
+  return `${Math.floor(hours / 24)}d ${hours % 24}h`
 }
