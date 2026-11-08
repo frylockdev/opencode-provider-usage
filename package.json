@@ -1,6 +1,6 @@
 {
   "name": "opencode-provider-usage",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "OpenAI subscription usage sidebar for OpenCode V2, powered by Codex CLI",
   "license": "MIT",
   "repository": {
@@ -12,14 +12,16 @@
     "url": "https://github.com/frylockdev/opencode-provider-usage/issues"
   },
   "keywords": ["opencode", "opencode-plugin", "openai", "codex", "usage", "tui"],
-  "files": ["src", "tsconfig.json"],
+  "files": ["src", "dist", "tsconfig.json"],
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./tui": "./src/tui.tsx",
+    "./tui": "./dist/tui.js",
     "./rpc": "./src/rpc.ts"
   },
   "scripts": {
+    "build": "bun run scripts/build.ts",
+    "test:tui": "bun test --preload @opentui/solid/preload tests/*.test.tsx tests/distribution.test.mjs",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
