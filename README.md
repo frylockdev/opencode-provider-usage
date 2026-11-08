@@ -55,7 +55,7 @@ OpenCode подхватит настройку автоматически. Ес�
 git clone https://github.com/frylockdev/opencode-provider-usage.git
 cd opencode-provider-usage
 npm ci
-npm exec --yes --package=bun -- bun run build
+npm exec --yes --package=bun -- bun run build:tui
 ```
 
 Для работы с исходниками добавьте абсолютный путь в `~/.config/opencode/opencode.json`:
@@ -106,7 +106,7 @@ workspace видны в подробностях, источник «через 
 ```sh
 npm test
 npm run typecheck
-npm exec --yes --package=bun -- bun run build
+npm exec --yes --package=bun -- bun run build:tui
 npm exec --yes --package=bun -- bun run test:tui
 opencode plugin list
 opencode api post /api/rpc/openai-usage/get --data '{"input":{}}'

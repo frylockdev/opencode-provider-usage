@@ -20,7 +20,7 @@
     "./rpc": "./src/rpc.ts"
   },
   "scripts": {
-    "build": "bun run scripts/build.ts",
+    "build:tui": "bun run scripts/build.ts",
     "test:tui": "bun test --preload @opentui/solid/preload tests/*.test.tsx tests/distribution.test.mjs",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
