@@ -42,7 +42,7 @@ codex login status
 3. Установите плагин глобально из GitHub:
 
 ```sh
-opencode plugin add 'github:frylockdev/opencode-provider-usage#v0.1.0'
+opencode plugin add 'github:frylockdev/opencode-provider-usage#v0.1.1'
 ```
 
 OpenCode подхватит настройку автоматически. Если панель не появилась — `/reload`.
@@ -114,7 +114,7 @@ Renderer-тест использует Bun, необходимый OpenTUI. Са
 ## Удаление
 
 ```sh
-opencode plugin remove 'github:frylockdev/opencode-provider-usage#v0.1.0'
+opencode plugin remove 'github:frylockdev/opencode-provider-usage#v0.1.1'
 ```
 
 При локальной установке уберите путь плагина из глобального `plugins`.

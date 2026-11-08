@@ -1,6 +1,6 @@
 {
   "name": "opencode-provider-usage",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "OpenAI subscription usage sidebar for OpenCode V2, powered by Codex CLI",
   "license": "MIT",
   "repository": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/frylockdev/opencode-provider-usage/issues"
   },
   "keywords": ["opencode", "opencode-plugin", "openai", "codex", "usage", "tui"],
-  "files": ["src"],
+  "files": ["src", "tsconfig.json"],
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
