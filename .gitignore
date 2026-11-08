@@ -1,0 +1,7 @@
+node_modules/
+.superpowers/
+docs/superpowers/
+.DS_Store
+*.tgz
+.env
+.env.*
