@@ -42,7 +42,7 @@ codex login status
 3. Установите плагин глобально из GitHub:
 
 ```sh
-opencode plugin add 'github:frylockdev/opencode-provider-usage#v0.1.2'
+opencode plugin add 'github:frylockdev/opencode-provider-usage#v0.1.3'
 ```
 
 OpenCode подхватит настройку автоматически. Если панель не появилась — `/reload`.
@@ -69,6 +69,7 @@ npm exec --yes --package=bun -- bun run build:tui
 Используйте одну запись плагина: GitHub-пакет или локальный каталог.
 После изменений интерфейса повторяйте сборку. `dist/tui.js` включён в GitHub-релиз:
 установленному плагину Bun отдельно не нужен. Загрузчик OpenTUI не компилирует TSX внутри `node_modules`.
+Команда названа `build:tui`, чтобы npm не запускал лишнюю подготовку Git-зависимости при установке.
 
 ## Управление
 
@@ -118,7 +119,7 @@ Renderer-тест использует Bun, необходимый OpenTUI. Са
 ## Удаление
 
 ```sh
-opencode plugin remove 'github:frylockdev/opencode-provider-usage#v0.1.2'
+opencode plugin remove 'github:frylockdev/opencode-provider-usage#v0.1.3'
 ```
 
 При локальной установке уберите путь плагина из глобального `plugins`.
